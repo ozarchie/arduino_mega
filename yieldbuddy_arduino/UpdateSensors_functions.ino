@@ -38,8 +38,9 @@ void updateSensorValues() {
   }
   
   
-  
   /*PH2------------------------------------------------*/
+/* jma
+
   float pH2Sum = 0;
   j = 0;
   analogRead(pH2Pin);  //Get ADC to switch to correct pin
@@ -64,11 +65,12 @@ void updateSensorValues() {
     my_pH2_string.println(pH2Value);
   }
   
-  
+ */ 
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !!TEMPERATURE SENSOR!!TEMPERATURE SENSOR!!TEMPERATURE SENSOR!!TEMPERATURE SENSOR!!TEMPERATURE SENSOR!!
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+ /* jma  
   float TempSum = 0;
   j = 0;
   analogRead(TempPin);  //Get ADC to switch to correct pin
@@ -82,8 +84,12 @@ void updateSensorValues() {
   TempRawValue = TempSum/((j-1) * 2);
 
   TempValue = ((5.00 * TempRawValue * 100.0)/1024.0) + 8.50;
+  jma */ 
   
-  ;  //dht.readTemperature(); to use the DHT11
+  DHT.read22(DHTPIN);  //Use updated DHT library for hum, temp
+//  delay(15); //Wait for Pin to Change
+  
+  TempValue=DHT.temperature; //
   if(isnan(TempValue)){
     TempValue = 0;        
   }
@@ -104,9 +110,8 @@ void updateSensorValues() {
   //       delay(10);
   //       }
   //       RHRawValue = RHSum/30;
-  dht.readHumidity();  //The DHT11 Sensor works differently, but for 'good measure'.
-  delay(15); //Wait for Pin to Change
-  RHValue = dht.readHumidity();
+
+  RHValue = DHT.humidity;
   if (isnan(RHValue)) {
     RHValue = 0;
   } 
@@ -148,6 +153,7 @@ void updateSensorValues() {
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!TDS2 SENSOR!!
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/* jma
   float TDS2Sum = 0;
   j = 0;
   analogRead(TDS2Pin);  //Get ADC to switch to correct pin
@@ -168,6 +174,8 @@ void updateSensorValues() {
   PString my_TDS2_string(TDS2_char, sizeof(TDS2_char));
   my_TDS2_string.print(TDS2Value);
   my_TDS2_string.println(" ppm"); 
+  
+  jma */
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!
@@ -238,7 +246,7 @@ void updateSensorValues() {
     pH1_Status = "HIGH";
   }
 
-
+/*jma
   if (pH2Value < pH2Value_Low) {
     pH2_Status = "LOW";
   } 
@@ -248,6 +256,7 @@ void updateSensorValues() {
   else if (pH2Value > pH2Value_High) {
     pH2_Status = "HIGH";
   }
+jma */
 
   //Temp
   if (TempValue < TempValue_Low) {
@@ -280,6 +289,7 @@ void updateSensorValues() {
     TDS1_Status = "HIGH";
   }
   //TDS2
+/* jma
   if (TDS2Value < TDS2Value_Low) {
     TDS2_Status = "LOW";
   } 
@@ -289,6 +299,9 @@ void updateSensorValues() {
   else if (TDS2Value < TDS2Value_High) {
     TDS2_Status = "HIGH";
   }
+  
+  jma */
+  
   //CO2
   if (CO2Value < CO2Value_Low) {
     CO2_Status = "LOW";

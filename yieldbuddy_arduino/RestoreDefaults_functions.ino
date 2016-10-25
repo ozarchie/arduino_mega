@@ -6,10 +6,10 @@
 void RestoreDefaults() {
 
   //Temporary placeholders for Time Settings Screen
-  tmp_month = 1;
-  tmp_day = 1;
-  tmp_year = 2012;
-  tmp_hour = 0;
+  tmp_month = 9;
+  tmp_day = 11;
+  tmp_year = 2016;
+  tmp_hour = 12;
   tmp_minute = 0;
   tmp_second = 0;
 
@@ -48,21 +48,21 @@ void RestoreDefaults() {
 
   //Values the arduino sees
   pH1RawValue = 0;
-  pH2RawValue = 0;
+  // jma pH2RawValue = 0;
   TempRawValue = 0;
   RHRawValue = 0;
   TDS1RawValue = 0;
-  TDS2RawValue = 0;
+  // jma TDS2RawValue = 0;
   CO2RawValue = 0;
   LightRawValue = 0;
 
   //Values the humans see
   pH1Value = 0;
-  pH2Value = 0;
+  // jma pH2Value = 0;
   TempValue = 0;
   RHValue = 0;
   TDS1Value = 0;
-  TDS2Value = 0;
+  // jma TDS2Value = 0;
   CO2Value = 0;
   LightValue = 0;
 
@@ -70,11 +70,11 @@ void RestoreDefaults() {
   pH1_Status = "OK";
   pH1Value_Low = 5.60;
   pH1Value_High = 6.10;
-
+/* jma
   pH2_Status = "OK";
   pH2Value_Low = 5.60;
   pH2Value_High = 6.10;
-
+jma */
   Temp_Status = "OK";
   TempValue_Low = 21.00;
   TempValue_High = 29.00;
@@ -88,13 +88,18 @@ void RestoreDefaults() {
   TDS1Value_High = 800.0;
 
   //TDS2
-  TDS2_Status = "OK";
+/* jma
+
+TDS2_Status = "OK";
   TDS2Value_Low = 500.0;
   TDS2Value_High = 800.0;
-  //Accessory ON/OFF Values
+
+
+//Accessory ON/OFF Values
   NutePump2_ON = 500.0;
   NutePump2_OFF = 800.0;
   MixPump2_Enabled = false;
+jma */
 
   CO2_Status = "OK";
   CO2Value_Low = 60.00;
@@ -163,8 +168,11 @@ void RestoreDefaults() {
   //pH
   eepromWriteFloat(78,pH1Value_Low);
   eepromWriteFloat(82,pH1Value_High);
+  
+  /* jma
   eepromWriteFloat(180,pH2Value_Low);
   eepromWriteFloat(184,pH2Value_High);
+jma */
 
   //Temp
   eepromWriteFloat(86,TempValue_Low);
@@ -195,6 +203,7 @@ void RestoreDefaults() {
   }
 
   //TDS2
+  /*jma
   eepromWriteFloat(188,TDS2Value_Low);
   eepromWriteFloat(193,TDS2Value_High);
   eepromWriteFloat(198,NutePump2_ON);
@@ -205,6 +214,7 @@ void RestoreDefaults() {
   else {
     EEPROM.write(208,0);
   }
+  jma */
 
   //CO2
   eepromWriteFloat(155,CO2Value_Low);

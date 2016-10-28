@@ -131,15 +131,15 @@ jma */
 
   turnRelay(1, 0);
   turnRelay(2, 0);
-  turnRelay(3, 0);
-  turnRelay(4, 0);
-  turnRelay(5, 0);
+//  turnRelay(3, 0);
+//  turnRelay(4, 0);
+//  turnRelay(5, 0);
   turnRelay(6, 0);
   Relay1_State = 0;
   Relay2_State = 0;
-  Relay3_State = 0;
-  Relay4_State = 0;
-  Relay5_State = 0;
+//  Relay3_State = 0;
+//  Relay4_State = 0;
+//  Relay5_State = 0;
   Relay6_State = 0;
   EEPROM.write(6, 0);
   EEPROM.write(7, 0);
@@ -151,17 +151,17 @@ jma */
 
   Relay1_isAuto = 0;  //EEPROM.read(211);  //Water Pump 1
   Relay2_isAuto = 0;  //EEPROM.read(212);  //Water Pump 2
-  Relay3_isAuto = 0;  //EEPROM.read(213);    //Free
-  Relay4_isAuto = 0;  //EEPROM.read(214);    //Free
-  Relay5_isAuto = 0;  //EEPROM.read(215);   //Free
+//  Relay3_isAuto = 0;  //EEPROM.read(213);    //Free
+//  Relay4_isAuto = 0;  //EEPROM.read(214);    //Free
+//  Relay5_isAuto = 0;  //EEPROM.read(215);   //Free
   Relay6_isAuto = 0;  //EEPROM.read(216);  //Light/Ballast  
 
   //Relay isAuto
   EEPROM.write(211, Relay1_isAuto);
   EEPROM.write(212, Relay2_isAuto);
-  EEPROM.write(213, Relay3_isAuto);
-  EEPROM.write(214, Relay4_isAuto);
-  EEPROM.write(215, Relay5_isAuto);
+//  EEPROM.write(213, Relay3_isAuto);
+// EEPROM.write(214, Relay4_isAuto);
+//  EEPROM.write(215, Relay5_isAuto);
   EEPROM.write(216, Relay6_isAuto);
 
 

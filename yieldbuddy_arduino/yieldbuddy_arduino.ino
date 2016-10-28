@@ -1,6 +1,10 @@
+#include <dht.h>
+
+
+//#include <PCF8583.h>
+//#include <DHT.h>
 #include <Time.h>
 #include <PString.h>
-#include <DHT.h>
 #include <EEPROM.h>
 #include <Wire.h>
 #include <DS1307RTC.h>
@@ -17,13 +21,13 @@ String Serial_inString = "";
 boolean stringComplete = false;
 int serialcounter = 0;
 
-char longdate[25] = "Jan 01, 2012 12:00:00 PM";
+char longdate[25] = "Sep 11, 2016 12:00:00 AM";
 char pH1_char[6] = "00.00";
-char pH2_char[6] = "00.00";
+// jma char pH2_char[6] = "00.00";
 char Temp_char[8]= "";
 char RH_char[7] = "00.00%";
 char TDS1_char[11] = "0000.0ppm";
-char TDS2_char[11] = "0000.0ppm";
+// jma char TDS2_char[11] = "0000.0ppm";
 char CO2_char[8] = "00.00%";
 char Light_char[7] = "00.00%";
 
@@ -92,21 +96,21 @@ boolean Pump_isAM_array[16];
 
 //Values the arduino sees
 int pH1RawValue = 0;
-int pH2RawValue = 0;
+// jma int pH2RawValue = 0;
 int TempRawValue = 0;
 int RHRawValue = 0;
 int TDS1RawValue = 0;
-int TDS2RawValue = 0;
+// jma int TDS2RawValue = 0;
 int CO2RawValue = 0;
 int LightRawValue = 0;
 
 //Values the humans see (after it has been calculated using raw values above ^^^ and their respected formulas)
 float pH1Value = 0;
-float pH2Value = 0;
+// jma float pH2Value = 0;
 float TempValue = 0;
 float RHValue = 0;
 float TDS1Value = 0;
-float TDS2Value = 0;
+// jma float TDS2Value = 0;
 float CO2Value = 0;
 float LightValue = 0;
 
@@ -116,9 +120,11 @@ String pH1_Status = "OK";
 float pH1Value_Low = 5.60;
 float pH1Value_High = 6.10;
 
+/* jma
 String pH2_Status = "OK";
 float pH2Value_Low = 5.60;
 float pH2Value_High = 6.10;
+jma */
 
 //Temp
 String Temp_Status = "OK";
@@ -151,6 +157,7 @@ float NutePump1_OFF = 800.0;
 boolean MixPump1_Enabled = true;
 
 //TDS2
+/* jma
 String TDS2_Status = "OK";
 float TDS2Value_Low = 500.0;
 float TDS2Value_High = 800.0;
@@ -158,6 +165,8 @@ float TDS2Value_High = 800.0;
 float NutePump2_ON = 500.0;
 float NutePump2_OFF = 800.0;
 boolean MixPump2_Enabled = true;
+
+jma */
 
 //CO2
 String CO2_Status = "OK";
@@ -181,24 +190,24 @@ float LightValue_High = 95.00;
  */
 int pH1Pin = A3;
 int pH2Pin = A4;
-int TempPin = A0;
+// int TempPin = A0;
 
 //RH
-#define DHTPIN 28
-#define DHTTYPE DHT11   // DHT 11
-DHT dht(DHTPIN, DHTTYPE);
+#define DHTPIN A0
+//#define DHTTYPE DHT22   // DHT 22
+dht DHT;
 
 int TDS1Pin = A5;
 int TDS2Pin = A6;
 int CO2Pin = A1;
 int LightPin = A2;
 
-int Relay1_Pin = 27;  //Water Pump 1
-int Relay2_Pin = 26;  //Water Pump 2
-int Relay3_Pin = 25;  //Free
-int Relay4_Pin = 24;  //Free
-int Relay5_Pin = 23;  //Free
-int Relay6_Pin = 22;  //Light/Ballast
+int Relay1_Pin = 14;  //Water Pump 1
+int Relay2_Pin = 15;  //Water Pump 2
+int Relay3_Pin = 16;  //Free
+int Relay4_Pin = 17;  //Free
+int Relay5_Pin = 18;  //Free
+int Relay6_Pin = 19;  //Light/Ballast
 
 int Relay1_State = 0;
 int Relay2_State = 0;
@@ -323,8 +332,10 @@ void setup()
   pH1Value_High = eepromReadFloat(82);
 
   //EEPROM pH2 Settings
+  /* jma
   pH2Value_Low = eepromReadFloat(180);
   pH2Value_High = eepromReadFloat(184);
+jma */
 
   //EEPROM Temp Settings
   TempValue_Low  = eepromReadFloat(86);
@@ -355,6 +366,8 @@ void setup()
   }
 
   //EEPROM TDS2 Settings
+/* jma
+
   TDS2Value_Low = eepromReadFloat(188);
   TDS2Value_High = eepromReadFloat(193);
   NutePump2_ON = eepromReadFloat(198);
@@ -365,7 +378,7 @@ void setup()
   else {
     MixPump2_Enabled = false;
   }
-
+jma */
 
   //EEPROM CO2 Settings
   CO2Value_Low = eepromReadFloat(155);
@@ -388,10 +401,11 @@ void setup()
 
   //Load default time first, then try the RTC.
   //Set-Time  setTime(hr,min,sec,day,month,yr);
-  setTime(0,0,0,1,1,2013);
-  setSyncProvider(RTC.get);
+  setTime(12,0,0,11,9,2016);
+  //jma setSyncProvider(RTC.get);
 
-  Serial1.begin(115200);
+  Serial.begin(115200);
+  Serial.println("YB V1.8");
 }
 
 
@@ -403,12 +417,13 @@ void setup()
 void loop()
 {
   
-  
+/*jma  
   //Clear the EEPROM and then write defaults.
   for (int i = 0; i < 4096; i++) {
     EEPROM.write(i, 0);
   }
   delay(1000); 
+jma */
 
   RestoreDefaults();
   turnRelay(1,1);
@@ -418,14 +433,22 @@ void loop()
   //delay(30000);
   
   
-  
+//  Serial.println("loop"); 
+
   while (1){
+//  Serial.print("1.");
   updatelongdate();
+//  Serial.print("2.");
   updateSensorValues();
+//  Serial.print("3.");
   serialEvent();
+//  Serial.print("4.");
   sendserialmessages();
+//  Serial.print("5.");
   CheckTimers();
+//  Serial.print("6.");
   serialEvent();
+//  Serial.print("7.");
   CheckSetPoints();
   }
 }

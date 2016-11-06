@@ -28,12 +28,8 @@ void CheckTimers(){
   //    Serial1.print(Light_OFF_min);
   //    Serial1.println();
 
-  if (Relay6_isAuto == 1){  
-
-
-
+  if (Relay_isAuto[SSR] == 1){  
     int TurnLightOn = 2;  //0: Turn Off  1: Turn On
-
     if (Light_ON_hour < Light_OFF_hour) {
       if (hour() >= Light_ON_hour && hour() <= Light_OFF_hour) {
         if (hour() == Light_OFF_hour && minute() < Light_OFF_min) {
@@ -76,9 +72,9 @@ void CheckTimers(){
 
 exit_loop_light:;
     if (TurnLightOn == 1) {
-      if (Relay6_isAuto == 1){
-        Relay6_State = 1;
-        EEPROM.write(11,1);
+      if (Relay_isAuto[SSR] == 1){
+        Relay_State[SSR] = 1;
+// jma        EEPROM.write(11,1);
         turnRelay(6, 1);
       }
       //    Serial1.println();
@@ -86,10 +82,10 @@ exit_loop_light:;
       //    Serial1.println();
     } 
     else {
-      if (Relay6_isAuto == 1){
-        Relay6_State = 0;
-        EEPROM.write(11,0);
-        turnRelay(6, 0);
+      if (Relay_isAuto[SSR] == 1){
+        Relay_State[SSR] = 0;
+// jma        EEPROM.write(11,0);
+        turnRelay((SSR+1), 0);
       }
       //    Serial1.println();
       //    Serial1.println("Turned Light OFF");
@@ -107,14 +103,12 @@ exit_loop_light:;
   int Pump_min_off;
 
   int TurnPumpOn = 2;  //0: Turn Off  1: Turn On  2: Unsure
-
-
   int i = 0;
   //  Serial1.println();
   //  Serial1.print("Water Pump Timers: ");
   //  Serial1.println();
 
-  for(i=0;i<Pump_times;i++){
+  for(i=0;i<Pump_repeat;i++){
     Pump_hour_on = Pump_hour_array[i];
     Pump_min_on  = Pump_min_array[i]; 
     Pump_min_off = Pump_min_on + Pump_for;
@@ -218,8 +212,6 @@ exit_loop_light:;
         goto exit_loop_pump;
       }
     }
-
-
   }
 
   SwitchPump(TurnPumpOn);
@@ -230,30 +222,30 @@ void SwitchPump(int TurnPumpOn){
   //  Serial1.print("TurnPumpOn: ");
   //  Serial1.println(TurnPumpOn);
   if (TurnPumpOn == 1) {
-    if (Relay1_isAuto == 1) {
-      Relay1_State = 1;
-      EEPROM.write(6,1);
-      turnRelay(1, 1);
+    if (Relay_isAuto[WP1] == 1) {
+      Relay_State[WP1] = 1;
+//      EEPROM.write(6,1);
+      turnRelay((WP1+1), 1);
     }
-    if (Relay2_isAuto == 1) {
-      Relay2_State = 1;
-      EEPROM.write(7,1);
-      turnRelay(2, 1);
+    if (Relay_isAuto[WP2] == 1) {
+      Relay_State[WP2] = 1;
+//      EEPROM.write(7,1);
+      turnRelay((WP2+1), 1);
     }
     //        Serial1.println();
     //        Serial1.println("Turned Water Pump On");
     //        Serial1.println();
-  } 
+  }
   else if (TurnPumpOn == 0 || TurnPumpOn == 2) {
-    if (Relay1_isAuto == 1){
-      Relay1_State = 0;
-      EEPROM.write(6,0);
-      turnRelay(1, 0);
+    if (Relay_isAuto[WP1] == 1){
+      Relay_State[WP1] = 0;
+//      EEPROM.write(6,0);
+      turnRelay((WP1+1), 0);
     }
-    if (Relay2_isAuto == 1){
-      Relay2_State = 0;
-      EEPROM.write(7,0);
-      turnRelay(2, 0);
+    if (Relay_isAuto[WP2] == 1){
+      Relay_State[WP2] = 0;
+//      EEPROM.write(7,0);
+      turnRelay((WP2+1), 0);
     }
     //        Serial1.println();
     //        Serial1.println("Turned Water Pump Off");

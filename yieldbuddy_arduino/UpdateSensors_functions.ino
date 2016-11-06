@@ -28,16 +28,9 @@ void updateSensorValues() {
   if(isnan(pH1Value)){
     pH1Value = 0;        
   }
-  PString my_pH1_string(pH1_char, sizeof(pH1_char));
-  if (pH1Value < 10){
-    my_pH1_string.print(" "); 
-    my_pH1_string.println(pH1Value);
-  } 
-  else {
-    my_pH1_string.println(pH1Value);
-  }
-  
-  
+
+  UIToStr(pH1_char, pH1Value, 4, 2);
+
   /*PH2------------------------------------------------*/
 /* jma
 
@@ -56,15 +49,8 @@ void updateSensorValues() {
   if(isnan(pH2Value)){
     pH2Value = 0;        
   }
-  PString my_pH2_string(pH2_char, sizeof(pH2_char));
-  if (pH2Value < 20){
-    my_pH2_string.print(" "); 
-    my_pH2_string.println(pH2Value);
-  } 
-  else {
-    my_pH2_string.println(pH2Value);
-  }
-  
+
+   UIToStr(pH2_char, pH2Value, 4, 2); 
  */ 
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -93,9 +79,9 @@ void updateSensorValues() {
   if(isnan(TempValue)){
     TempValue = 0;        
   }
-  PString my_Temp_string(Temp_char, sizeof(Temp_char));
-  my_Temp_string.print(TempValue);
-  my_Temp_string.println(" C"); 
+  
+  UIToStr(Temp_char, TempValue, 4, 2);
+  strcat(Temp_char," C"); 
   
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -110,19 +96,18 @@ void updateSensorValues() {
   //       delay(10);
   //       }
   //       RHRawValue = RHSum/30;
-
+  
   RHValue = DHT.humidity;
   if (isnan(RHValue)) {
     RHValue = 0;
   } 
-  PString my_RH_string(RH_char, sizeof(RH_char));
-  my_RH_string.print(RHValue);
-
+  
+  UIToStr(RH_char, RHValue, 4, 2);
   if (RHValue < 10){
-    my_RH_string.println("% "); 
+    strcat(RH_char,"% ");
   } 
   else {
-    my_RH_string.println("%"); 
+    strcat(RH_char,"%");
   }
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -141,13 +126,11 @@ void updateSensorValues() {
   TDS1RawValue = TDS1Sum/((j-1) * 2);
 
   TDS1Value = ((TDS1RawValue * 100.0)/1024.0);
-  
   if(isnan(TDS1Value)){
     TDS1Value = 0;        
   }
-  PString my_TDS1_string(TDS1_char, sizeof(TDS1_char));
-  my_TDS1_string.println(TDS1Value);
-  my_TDS1_string.println(" ppm"); 
+  UIToStr(TDS1_char, TDS1Value, 4, 2);
+  strcat(TDS1_char," ppm");    
   
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -163,23 +146,24 @@ void updateSensorValues() {
     TDS2Sum = TDS2Sum + analogRead(TDS2Pin);
     j++;
   }
-
   TDS2RawValue = TDS2Sum/((j-1) * 2);
 
   TDS2Value = ((TDS2RawValue * 100.0)/1024.0);
-  
   if(isnan(TDS2Value)){
     TDS2Value = 0;        
   }
-  PString my_TDS2_string(TDS2_char, sizeof(TDS2_char));
-  my_TDS2_string.print(TDS2Value);
-  my_TDS2_string.println(" ppm"); 
+  UIToStr(TDS2char, TDS2Value, 4, 2);
+  strcat(TDS2_char," ppm");   
   
   jma */
+ 
+
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!CO2 SENSOR!!
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
+ /* jma
   float CO2Sum = 0;
   j = 0;
   analogRead(CO2Pin);  //Get ADC to switch to correct pin
@@ -189,22 +173,21 @@ void updateSensorValues() {
     CO2Sum = CO2Sum + analogRead(CO2Pin);
     j++;
   }
-
   CO2RawValue = CO2Sum/((j-1) * 2);
-
   CO2Value = ((CO2RawValue * 100.0)/1024.0);
   
   if(isnan(CO2Value)){
     CO2Value = 0;        
   }
-  PString my_CO2_string(CO2_char, sizeof(CO2_char));
-  my_CO2_string.print(CO2Value);
-  my_CO2_string.println(" ppm"); 
-  
+
+  UIToStr(CO2_char, CO2Value, 4, 2);
+  strcat(CO2_char," ppm");   
+*/  
   
  /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !!LIGHT SENSOR!!LIGHT SENSOR!!LIGHT SENSOR!!LIGHT SENSOR!!LIGHT SENSOR!!LIGHT SENSOR!!LIGHT SENSOR!!
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+
   float LightSum = 0;
   j = 0;
   analogRead(LightPin);  //Get ADC to switch to correct pin
@@ -222,105 +205,99 @@ void updateSensorValues() {
   if (isnan(LightValue)) {
     LightValue = 0;
   } 
-  PString my_Light_string(Light_char, sizeof(Light_char));
-  my_Light_string.print(LightValue);
+  UIToStr(Light_char, LightValue, 4, 2);
   if (LightValue < 10){
-    my_Light_string.println("% "); 
+    strcat(Light_char,"% ");
   } 
   else {
-    my_Light_string.println("%"); 
+    strcat(Light_char,"%");
   }
   
-  
-  
-  
-
   //pH
   if (pH1Value < pH1Value_Low) {
-    pH1_Status = "LOW";
+    strcpy(pH1_Status,"LOW");
   } 
   else if (pH1Value > pH1Value_Low && pH1Value < pH1Value_High) {
-    pH1_Status = "OK";
+    strcpy(pH1_Status,"OK");
   } 
   else if (pH1Value > pH1Value_High) {
-    pH1_Status = "HIGH";
+    strcpy(pH1_Status,"HIGH");
   }
 
 /*jma
   if (pH2Value < pH2Value_Low) {
-    pH2_Status = "LOW";
+    strcpy(pH2_Status,"LOW");
   } 
   else if (pH2Value > pH2Value_Low && pH2Value < pH2Value_High) {
-    pH2_Status = "OK";
+    strcpy(pH2_Status,"OK");
   } 
   else if (pH2Value > pH2Value_High) {
-    pH2_Status = "HIGH";
+    strcpy(pH2_Status,"HIGH");
   }
 jma */
 
   //Temp
   if (TempValue < TempValue_Low) {
-    Temp_Status = "LOW";
+    strcpy(Temp_Status,"LOW");
   } 
   else if (TempValue > TempValue_Low && TempValue < TempValue_High) {
-    Temp_Status = "OK";
+    strcpy(Temp_Status,"OK");
   } 
   else if (TempValue > TempValue_High) {
-    Temp_Status = "HIGH";
+    strcpy(Temp_Status,"HIGH");
   }
   //RH
   if (RHValue < RHValue_Low) {
-    RH_Status = "LOW";
+    strcpy(RH_Status,"LOW");
   } 
   else if (RHValue > RHValue_Low && RHValue < RHValue_High) {
-    RH_Status = "OK";
+    strcpy(RH_Status,"OK");
   }
   else if (RHValue < RHValue_High) {
-    RH_Status = "HIGH";
+    strcpy(RH_Status,"HIGH");
   }
   //TDS1
   if (TDS1Value < TDS1Value_Low) {
-    TDS1_Status = "LOW";
+    strcpy(TDS1_Status,"LOW");
   } 
   else if (TDS1Value > TDS1Value_Low && TDS1Value < TDS1Value_High) {
-    TDS1_Status = "OK";
+    strcpy(TDS1_Status,"OK");
   } 
   else if (TDS1Value < TDS1Value_High) {
-    TDS1_Status = "HIGH";
+    strcpy(TDS1_Status,"HIGH");
   }
   //TDS2
 /* jma
   if (TDS2Value < TDS2Value_Low) {
-    TDS2_Status = "LOW";
+    strcpy(TDS2_Status,"LOW");
   } 
   else if (TDS2Value > TDS2Value_Low && TDS2Value < TDS2Value_High) {
-    TDS2_Status = "OK";
+    strcpy(TDS2_Status,"OK");
   } 
   else if (TDS2Value < TDS2Value_High) {
-    TDS2_Status = "HIGH";
+    strcpy(TDS2_Status,"HIGH");
   }
   
   jma */
   
   //CO2
   if (CO2Value < CO2Value_Low) {
-    CO2_Status = "LOW";
+    strcpy(CO2_Status,"LOW");
   } 
   else if (CO2Value > CO2Value_Low && CO2Value < CO2Value_High) {
-    CO2_Status = "OK";
+    strcpy(CO2_Status,"OK");
   } 
   else if (CO2Value > CO2Value_High){
-    CO2_Status = "HIGH";
+    strcpy(CO2_Status,"HIGH");
   }
   //Light
   if (LightValue < LightValue_Low) {
-    Light_Status = "LOW";
+    strcpy(Light_Status,"LOW");
   } 
   else if (LightValue > LightValue_Low && LightValue < LightValue_High) {
-    Light_Status = "OK";
+    strcpy(Light_Status,"OK");
   } 
   else if (LightValue < LightValue_High) {
-    Light_Status = "HIGH";
+    strcpy(Light_Status,"HIGH");
   }
-
 }

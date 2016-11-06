@@ -7,6 +7,6 @@
  
  */
  
- void CheckSetPoints(){
+ void CheckSetPoints() {
    
  }
